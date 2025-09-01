@@ -1,0 +1,45 @@
+/metrics.json
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.env
+.venv
+*.egg-info/
+*.egg
+
+# Conda environments
+*.conda
+*.yaml
+
+# Logs
+*.log
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# DVC cache (handled separately)
+.dvc/cache/
+.dvc/tmp/
+
+# MLflow artifacts & db (tracked outside Git)
+mlruns/
+mlruns_db/
+
+# Data (DVC will track via .dvc files)
+data/raw/*.csv
+data/processed/
+*.parquet
+
+# Model binaries
+models/
+*.pkl
+*.h5
+*.pt
+
+# OS files
+.DS_Store
+Thumbs.db

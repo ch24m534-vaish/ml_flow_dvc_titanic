@@ -1,0 +1,10 @@
+dvc
+mlflow
+fastapi
+uvicorn
+pyspark
+scikit-learn
+pandas
+matplotlib
+seaborn
+numpy

@@ -1,0 +1,69 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/data_preprocess.py --input data/raw/train.csv --output 
+      data/processed/train_parquet --params params.yaml
+    deps:
+    - path: data/raw/train.csv
+      hash: md5
+      md5: a45fcc3fd2bbe1c5ecbbcd06f9bc6a5b
+      size: 135419
+    - path: params.yaml
+      hash: md5
+      md5: af20d25dcf61bd029fc61741582c5783
+      size: 598
+    - path: src/data_preprocess.py
+      hash: md5
+      md5: 60f23d1789a99d389ec5cd0776b81d1e
+      size: 3651
+    params:
+      params.yaml:
+        spark.executor_cores: 8
+        spark.executor_instances: 4
+        spark.executor_memory: 16g
+    outs:
+    - path: data/processed/train_parquet
+      hash: md5
+      md5: e0133b160a3df7b77c9383ad5a434414.dir
+      size: 36696
+      nfiles: 44
+  train:
+    cmd: python src/train.py --input data/processed/train_parquet --params 
+      params.yaml
+    deps:
+    - path: data/processed/train_parquet
+      hash: md5
+      md5: e0133b160a3df7b77c9383ad5a434414.dir
+      size: 36696
+      nfiles: 44
+    - path: params.yaml
+      hash: md5
+      md5: af20d25dcf61bd029fc61741582c5783
+      size: 598
+    - path: src/train.py
+      hash: md5
+      md5: 54466bd19c1aace27b42b64a304bf23b
+      size: 9065
+    params:
+      params.yaml:
+        spark.executor_cores: 8
+        spark.executor_instances: 4
+        spark.executor_memory: 16g
+        train.crossval:
+          folds: 3
+          parallelism: 2
+        train.random_seed: 42
+        train.rf:
+          numTrees: &id002
+          - 20
+          - 50
+          - 100
+          maxDepth: &id001
+          - 5
+          - 10
+          - 15
+          featureSubsetStrategy:
+          - sqrt
+          - log2
+        train.rf.maxDepth: *id001
+        train.rf.numTrees: *id002
