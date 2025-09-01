@@ -1,0 +1,29 @@
+stages:
+  preprocess:
+    cmd: python src/data_preprocess.py --input ${preprocess.input_path} --output ${preprocess.output_path} --params params.yaml
+    deps:
+      - src/data_preprocess.py
+      - params.yaml
+      - ${preprocess.input_path}
+    outs:
+      - ${preprocess.output_path}
+    params:
+      - spark.executor_cores
+      - spark.executor_memory
+      - spark.executor_instances
+
+  train:
+    cmd: python src/train.py --input ${preprocess.output_path} --params params.yaml
+    deps:
+      - src/train.py
+      - params.yaml
+      - ${preprocess.output_path}
+    params:
+      - train.random_seed
+      - train.rf
+      - train.rf.numTrees
+      - train.rf.maxDepth
+      - train.crossval
+      - spark.executor_cores
+      - spark.executor_memory
+      - spark.executor_instances
